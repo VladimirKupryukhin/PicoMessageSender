@@ -17,13 +17,13 @@ _FLAG_WRITE_NO_RESPONSE = const(0x0004)
 _FLAG_WRITE = const(0x0008)
 _FLAG_NOTIFY = const(0x0010)
 
-_UART_UUID = bluetooth.UUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")
+_UART_UUID = bluetooth.UUID("0000181a-0000-1000-8000-00805f9b34fb")
 _UART_TX = (
-    bluetooth.UUID("6E400003-B5A3-F393-E0A9-E50E24DCCA9E"),
+    bluetooth.UUID("0000181a-0000-1000-8000-00805f9b34fb"),
     _FLAG_READ | _FLAG_NOTIFY,
 )
 _UART_RX = (
-    bluetooth.UUID("6E400002-B5A3-F393-E0A9-E50E24DCCA9E"),
+    bluetooth.UUID("0000181a-0000-1000-8000-00805f9b34fb"),
     _FLAG_WRITE | _FLAG_WRITE_NO_RESPONSE,
 )
 _UART_SERVICE = (
@@ -89,6 +89,10 @@ def demo():
     while True:
         if p.is_connected():
             # Short burst of queued notifications.
+            
+            # str = "hello from pico".encode()
+            # p.send(str)
+            
             for _ in range(3):
                 data = str(i) + "_"
                 print("TX", data)
