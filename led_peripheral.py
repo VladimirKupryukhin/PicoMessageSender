@@ -82,17 +82,7 @@ class BLESimplePeripheral:
     def on_write(self, callback):
         self._write_callback = callback
 
-def button1Callback():
-    print("Button1 pressed")
 
-def button2Callback():
-    print("Button2 pressed")
-    
-def button3Callback():
-    print("Button3 pressed")
-
-def button4Callback():
-    print("Button4 pressed")
 
 def demo():
     ble = bluetooth.BLE()
@@ -102,6 +92,26 @@ def demo():
         print("RX", v)
 
     p.on_write(on_rx)
+    
+    def button1Callback():
+        dataStr = "B1".encode()
+        p.send(dataStr)
+        print("Button1 pressed")
+
+    def button2Callback():
+        dataStr = "B2".encode()
+        p.send(dataStr)
+        print("Button2 pressed")
+        
+    def button3Callback():
+        dataStr = "B3".encode()
+        p.send(dataStr)
+        print("Button3 pressed")
+
+    def button4Callback():
+        dataStr = "B4".encode()
+        p.send(dataStr)
+        print("Button4 pressed")
 
     button1 = Button(BUTTON_PIN_1)
     button2 = Button(BUTTON_PIN_2)
