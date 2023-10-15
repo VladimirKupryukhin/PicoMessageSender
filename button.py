@@ -6,9 +6,9 @@ class Button:
         self.button = Pin(pin, Pin.IN, Pin.PULL_UP)
         
         
-    def isPressed(self):
+    def isPressed(self, callback):
         if self.button.value() == 0:
-            print("Button is pressed")
+            callback()
         else:
             print("Button is not pressed")
         
