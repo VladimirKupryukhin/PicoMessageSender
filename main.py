@@ -1,12 +1,22 @@
 # This example demonstrates a UART periperhal.
 
 import bluetooth
+import machine
 import random
 import struct
 import time
 from ble_advertising import advertising_payload
+from button import Button
 
 from micropython import const
+
+BUTTON_PIN_1 = 12
+BUTTON_PIN_2 = 15
+BUTTON_PIN_3 = 19
+BUTTON_PIN_4 = 16
+
+led = machine.Pin('LED', machine.Pin.OUT)
+
 
 _IRQ_CENTRAL_CONNECT = const(1)
 _IRQ_CENTRAL_DISCONNECT = const(2)
@@ -76,6 +86,7 @@ class BLESimplePeripheral:
         self._write_callback = callback
 
 
+
 def demo():
     ble = bluetooth.BLE()
     p = BLESimplePeripheral(ble)
@@ -84,20 +95,63 @@ def demo():
         print("RX", v)
 
     p.on_write(on_rx)
+    
+    def button1Callback():
+        dataStr = "B1".encode()
+        p.send(dataStr)
+        print("Button1 pressed")
 
-    i = 0
+    def button2Callback():
+        dataStr = "B2".encode()
+        p.send(dataStr)
+        print("Button2 pressed")
+        
+    def button3Callback():
+        dataStr = "B3".encode()
+        p.send(dataStr)
+        print("Button3 pressed")
+
+    def button4Callback():
+        dataStr = "B4".encode()
+        p.send(dataStr)
+        print("Button4 pressed")
+
+    button1 = Button(BUTTON_PIN_1)
+    button2 = Button(BUTTON_PIN_2)
+    button3 = Button(BUTTON_PIN_3)
+    button4 = Button(BUTTON_PIN_4)
+        
+    shouldTurnOn = 1
+    
+    for x in range(50):
+        led.value(shouldTurnOn)
+        if (shouldTurnOn == 1) :
+            shouldTurnOn = 0
+        else:
+            shouldTurnOn = 1
+        
+        time.sleep_ms(25)
+        
     while True:
-        if p.is_connected():
-            # Short burst of queued notifications.
+        if p.is_connected():    
+            button1.isPressed(button1Callback)
+            button2.isPressed(button2Callback)
+            button3.isPressed(button3Callback)
+            button4.isPressed(button4Callback)
             
-            # str = "hello from pico".encode()
-            # p.send(str)
+            led.value(shouldTurnOn)
+            if (shouldTurnOn == 1) :
+                shouldTurnOn = 0
+            else:
+                shouldTurnOn = 1
             
-            for _ in range(3):
-                data = str(i) + "_"
-                print("TX", data)
-                p.send(data)
-                i += 1
+            
+            pass
+        else:
+            led.off()
+                
+                
+                
         time.sleep_ms(100)
 
 
